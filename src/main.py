@@ -36,7 +36,8 @@ class Main:
                     if board.squares[clicked_row][clicked_col].has_piece():
                         piece = board.squares[clicked_row][clicked_col].piece
                         if piece.color == game.next_player:
-                            board.calc_moves(piece, clicked_row, clicked_col,True)
+                            board.calc_moves(
+                                piece, clicked_row, clicked_col, True)
                             mover.save_initial(event.pos)
                             mover.move_piece(piece)
                             game.show_background(screen)
@@ -62,8 +63,9 @@ class Main:
                         move = Move(initial, final)
 
                         if board.valid_move(mover.piece, move):
-                            captured=board.squares[released_row][released_col].has_piece()
+                            captured = board.squares[released_row][released_col].has_piece()
                             board.move(mover.piece, move)
+                            board.set_true_en_passant(mover.piece)
                             game.sound_effect(captured)
                             game.show_background(screen)
                             game.show_last_move(screen)
@@ -72,9 +74,9 @@ class Main:
 
                     mover.stop_move()
                 elif event.type == pygame.KEYDOWN:
-                    if event.key==pygame.K_t:
+                    if event.key == pygame.K_t:
                         game.change_theme()
-                    if event.key==pygame.K_r:
+                    if event.key == pygame.K_r:
                         game.reset()
                         game = self.game
                         screen = self.screen
