@@ -8,8 +8,25 @@ class Board:
     def __init__(self) -> None:
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0]for col in range(COLS)]
         self.create()
+        self.last_move = None
         self.add_pieces('white')
         self.add_pieces('black')
+
+    def move(self, piece, move):
+        initial = move.initial
+        final = move.final
+
+        self.squares[initial.row][initial.col].piece = None
+        self.squares[final.row][final.col].piece = piece
+
+        piece.moved = True
+
+        piece.clear_moves()
+
+        self.last_move = move
+
+    def valid_move(self, piece, move):
+        return move in piece.moves
 
     def calc_moves(self, piece, row, col):
         def pawn_moves():
@@ -79,23 +96,25 @@ class Board:
                             break
                         if self.squares[possible_move_row][possible_move_col].is_team(piece.color):
                             break
-                    else: break
-                    possible_move_row,possible_move_col=possible_move_row+row_inc,possible_move_col+col_inc
-                    
+                    else:
+                        break
+                    possible_move_row, possible_move_col = possible_move_row + \
+                        row_inc, possible_move_col+col_inc
+
         def king_moves():
-            adjs=[
-                (row-1,col),
-                (row-1,col+1),
-                (row,col+1),
-                (row+1,col+1),
-                (row+1,col),
-                (row+1,col-1),
-                (row,col-1),
-                (row-1,col-1),
+            adjs = [
+                (row-1, col),
+                (row-1, col+1),
+                (row, col+1),
+                (row+1, col+1),
+                (row+1, col),
+                (row+1, col-1),
+                (row, col-1),
+                (row-1, col-1),
             ]
 
             for possible_move in adjs:
-                possible_move_row,possible_move_col=possible_move
+                possible_move_row, possible_move_col = possible_move
 
                 if Square.in_range(possible_move_row, possible_move_col):
                     if self.squares[possible_move_row][possible_move_col].empty_or_opp(piece.color):
@@ -159,4 +178,3 @@ class Board:
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
         # King
         self.squares[row_other][4] = Square(row_other, 4, King(color))
-
