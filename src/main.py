@@ -20,6 +20,7 @@ class Main:
 
         while True:
             game.show_background(screen)
+            game.show_moves(screen)
             game.show_pieces(screen)
 
             if mover.moving:
@@ -31,13 +32,18 @@ class Main:
                     clicked_col=mover.mouseX//SQ_SIZE
                     if board.squares[clicked_row][clicked_col].has_piece():
                         piece=board.squares[clicked_row][clicked_col].piece
+                        board.calc_moves(piece,clicked_row,clicked_col)
                         mover.save_initial(event.pos)
                         mover.move_piece(piece)
+                        game.show_background(screen)
+                        game.show_moves(screen)
+                        game.show_pieces(screen)
 
                 elif event.type == pygame.MOUSEMOTION:
                     if mover.moving:
                         mover.update_mouse(event.pos)
                         game.show_background(screen)
+                        game.show_moves(screen)
                         game.show_pieces(screen)
                         mover.update_blit(screen)
                 elif event.type == pygame.MOUSEBUTTONUP:

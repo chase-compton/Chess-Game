@@ -9,7 +9,7 @@ from piece import *
 class Game:
     def __init__(self):
         self.board = Board()
-        self.mover=Mover()
+        self.mover = Mover()
 
     def show_background(self, surface):
         for row in range(ROWS):
@@ -33,3 +33,14 @@ class Game:
                         img_center = col*SQ_SIZE+SQ_SIZE//2, row*SQ_SIZE+SQ_SIZE//2
                         piece.image_rect = img.get_rect(center=img_center)
                         surface.blit(img, piece.image_rect)
+
+    def show_moves(self, surface):
+        if self.mover.moving:
+            piece = self.mover.piece
+
+            for move in piece.moves:
+                color = '#C86464' if (
+                    move.final.row + move.final.col) % 2 == 0 else '#C84646'
+                rect = (move.final.col*SQ_SIZE, move.final.row *
+                        SQ_SIZE, SQ_SIZE, SQ_SIZE)
+                pygame.draw.rect(surface, color, rect)

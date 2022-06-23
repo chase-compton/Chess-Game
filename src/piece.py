@@ -14,7 +14,7 @@ class Piece:
 
     def set_image(self,size=80):
         self.image=os.path.join(f'assets/images/imgs-{size}px/{self.color}_{self.name}.png')
-    def add_moves(self,move):
+    def add_move(self,move):
         self.moves.append(move)
 
 
