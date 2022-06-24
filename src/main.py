@@ -2,6 +2,7 @@ import pygame
 import sys
 from const import *
 from game import Game
+from piece import King, Piece
 from square import Square
 from move import Move
 
@@ -13,6 +14,8 @@ class Main:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('Chess Game')
         self.game = Game()
+        self.end=False
+        self.end_type='clear'
 
     def mainloop(self):
         game = self.game
@@ -25,6 +28,8 @@ class Main:
             game.show_last_move(screen)
             game.show_moves(screen)
             game.show_pieces(screen)
+            if self.end:
+                game.show_end(self.end_type,screen)
 
             if mover.moving:
                 mover.update_blit(screen)
@@ -73,6 +78,9 @@ class Main:
                             game.next_turn()
 
                     mover.stop_move()
+                    if board.game_ending_check(game.next_player) != 'clear' and not self.end:
+                        self.end=True
+                        self.end_type=board.game_ending_check(game.next_player)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_t:
                         game.change_theme()
@@ -82,6 +90,8 @@ class Main:
                         screen = self.screen
                         mover = self.game.mover
                         board = self.game.board
+                        self.end=False
+                        self.end_type='clear'
 
                 # QUIT
                 elif event.type == pygame.QUIT:

@@ -1,3 +1,4 @@
+from tkinter import CENTER
 import pygame
 from const import *
 from board import Board
@@ -85,3 +86,8 @@ class Game:
 
     def next_turn(self):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
+    def show_end(self,type,surface):
+        color = '#000000'
+        label=self.config.endFont.render(type,1,color)
+        label_pos=(290,425)
+        surface.blit(label,label_pos)

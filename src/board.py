@@ -78,9 +78,24 @@ class Board:
                             return True
         return False
 
-    def game_ending_check():
-        #calculate moves for all pieces, if zero and in check then mate, else stale
-        pass
+    def game_ending_check(self,color):
+        temp_board=copy.deepcopy(self)
+        for row in range(ROWS):
+            for col in range(COLS):
+                if isinstance(self.squares[row][col].piece,King) and self.squares[row][col].is_team(color):
+                    KRow=row
+                    KCol=col
+                if self.squares[row][col].is_team(color):
+                    temp_piece=copy.deepcopy(self.squares[row][col].piece)
+                    temp_board.calc_moves(temp_piece,row,col,bool=True)
+                    if temp_piece.moves:
+                        return 'clear'
+        KingSquare=Square(KRow,KCol)
+        KMove=Move(KingSquare,KingSquare)
+        if self.in_check(self.squares[KRow][KCol].piece,KMove):
+            return 'Checkmate'
+        else:
+            return 'Stalemate'
 
     def calc_moves(self, piece, row, col, bool=True):
         def pawn_moves():
