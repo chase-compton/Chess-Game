@@ -1,4 +1,3 @@
-from tkinter import CENTER
 import pygame
 from const import *
 from board import Board

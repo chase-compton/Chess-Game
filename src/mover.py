@@ -1,4 +1,3 @@
-import imp
 import pygame
 from const import *
 
@@ -9,8 +8,8 @@ class Mover:
         self.moving = False
         self.mouseX = 0
         self.mouseY = 0
-        self.initial_row = 0
         self.initial_col = 0
+        self.initial_row = 0
 
     def update_blit(self, surface):
         self.piece.set_image(size=128)
