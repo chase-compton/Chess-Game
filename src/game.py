@@ -87,6 +87,11 @@ class Game:
         self.next_player = 'white' if self.next_player == 'black' else 'black'
     def show_end(self,type,surface):
         color = '#000000'
-        label=self.config.endFont.render(type,1,color)
-        label_pos=(290,425)
-        surface.blit(label,label_pos)
+        font = pygame.font.Font(None, 100)
+        text = font.render(type, 1, color)
+
+        text_rect = text.get_rect()
+        text_rect.centerx = surface.get_rect().centerx
+        text_rect.centery = surface.get_rect().centery
+
+        surface.blit(text, text_rect)
